@@ -21,6 +21,9 @@ fi
 echo "[Install] Installing packages..."
 grep -ve '^#' -e '^$' "$PACKAGES_FILE" | xargs -rt apt install -y
 
+# Fail2ban setup
+cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+
 # Create symlink
 if command -v fdfind >/dev/null 2>&1 && [ ! -e /usr/local/bin/fd ]; then
     ln -s $(which fdfind) /usr/local/bin/fd
@@ -112,8 +115,7 @@ for user_home in /home/*; do
 
         if [ "$user_name" != "lost+found" ]; then
             deploy_to "$user_home" "$user_name"
-			chsh -s $(which zsh) "$user_name"
-			zsh
+            chsh -s $(which zsh) "$user_name"
         fi
     fi
 done

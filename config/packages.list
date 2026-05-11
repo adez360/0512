@@ -8,6 +8,7 @@ curl
 zip
 unzip
 avahi-utils
+fail2ban
 
 # Web
 apache2
