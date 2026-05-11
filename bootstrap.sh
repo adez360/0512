@@ -9,9 +9,11 @@ echo "[Install] Updating..."
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-apt update
+timedatectl set-timezone 'Asia/Taipei'
+
 # Install package
-PACKAGES_FILE="$DIR/packages.list"
+apt update
+PACKAGES_FILE="$DIR/config/packages.list"
 if [ ! -f "$PACKAGES_FILE" ];then
 	echo "[Error] packages.list file not found!"
 	exit 1
