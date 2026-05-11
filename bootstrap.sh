@@ -5,30 +5,22 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-echo "Updating package lists..."
+echo "[Install] Updating..."
 apt update
 
 # Install package
-echo "Installing zsh, tmux, fzf, fd-find, and ncdu..."
-apt install -y zsh tmux fzf fd-find curl git unzip zip php
+PACKAGES_FILE="./packages.list"
+if [ ! -f "$PACKAGES_FILE" ];then
+	echo "[Error] packages.list file not found!"
+	exit 1
+fi
+echo "[Install] Installing packages..."
+grep -v '^ #' "#PACKAGES_FILE" | xargs -r apt install -y
 
 # Create symlink
 if command -v fdfind >/dev/null 2>&1 && [ ! -e /usr/local/bin/fd ]; then
     ln -s $(which fdfind) /usr/local/bin/fd
     echo "Created symlink for fdfind -> /usr/local/bin/fd"
-fi
-
-# Install ripgrep
-echo "Downloading and installing ripgrep 14.1.1..."
-curl -LO https://github.com/BurntSushi/ripgrep/releases/download/14.1.1/ripgrep_14.1.1-1_amd64.deb
-dpkg -i ripgrep_14.1.1-1_amd64.deb
-
-# Delete ripgrep.deb
-if [ $? -eq 0 ]; then
-    rm -f ripgrep_14.1.1-1_amd64.deb
-    echo "ripgrep installed and .deb file removed."
-else
-    echo "Warning: ripgrep installation failed. .deb file was kept for debugging."
 fi
 
 # Instal omz to /opt
@@ -75,7 +67,7 @@ if [ -f "$CONFIG_FILE" ]; then
 	source "$CONFIG_FILE"
 else
 	EXCLUDE_USERS=()
-	echo "Warning: No config file found"
+	echo "[Warning] No config file found"
 	echo '# Add username you want to skip' > "$CONFIG_FILE"
 	echo 'EXCLUDE_USERS=("example" "user")' >> "$CONFIG_FILE"
 fi

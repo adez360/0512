@@ -7,13 +7,15 @@ git
 curl
 zip
 unzip
+avahi-utils
 
 # Web
-apachi2
+apache2
 php
 libapache2-mod-php
 php-mysql
 mariadb-server
+apache2-utils
 
 # NFS
 nfs-kernel-server
