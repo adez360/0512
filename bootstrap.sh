@@ -17,7 +17,7 @@ if [ ! -f "$PACKAGES_FILE" ];then
 	exit 1
 fi
 echo "[Install] Installing packages..."
-grep -v '^ #' "$PACKAGES_FILE" | xargs -r apt install -y
+grep -ve '^#' -e '^$' "$PACKAGES_FILE" | xargs -rt apt install -y
 
 # Create symlink
 if command -v fdfind >/dev/null 2>&1 && [ ! -e /usr/local/bin/fd ]; then
