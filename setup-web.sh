@@ -24,14 +24,15 @@ cp "${PMA_TARGET_DIR}/config.sample.inc.php" "${PMA_TARGET_DIR}/config.inc.php"
 # Copy site1 and site2
 mkdir -p "${HTML_DIR}/site1" "${HTML_DIR}/site2"
 cp -r "$DIR/source/html/site1" "${HTML_DIR}/site1" || \
-        echo -e "${RED}[ERROR]${NC} site1/ not found" 
+        echo -e "${RED}[X]${NC} site1/ not found" 
 cp -r "$DIR/source/html/site2" "${HTML_DIR}/site2" || \
-        echo -e "${RED}[ERROR]${NC} site2/ not found" 
+        echo -e "${RED}[X]${NC} site2/ not found" 
 
 # Configure Apache virtual hosts
-read -p "Enter the base domain name (e.g., example.local): " DOMAIN_NAME
+echo -e "${YELLOW}請輸入要廣播的根域名稱(e.g. se218.local):${NC}"
+read -p "->" DOMAIN_NAME
 if [ -z "$DOMAIN_NAME" ]; then
-    echo -e "${RED}[ERROR]${NC} Domain name cannot be empty."
+    echo -e "${RED}[X]${NC} Domain name cannot be empty."
     exit 1
 fi
 
@@ -46,7 +47,7 @@ sed -e "s/site1.g3.local/site1.${DOMAIN_NAME}/g" \
     -e "s|DocumentRoot /var/www/html/site1$|DocumentRoot /var/www/html/site2|2" \
     "$DIR/source/sites-enabled/001-main.conf" > "${APACHE_CONF_DIR}/001-main.conf"
 
-echo "Configured Apache virtual hosts for site1.${DOMAIN_NAME} and site2.${DOMAIN_NAME}"
+echo "[v]已設定apache2虛擬主機至 site1.${DOMAIN_NAME} 及 site2.${DOMAIN_NAME} 。"
 
 # restart apache2
 systemctl restart apache2.service
