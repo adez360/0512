@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SCRIPT_DIR="$(cd "$(dirname "{$BASH_SOURCE[0]}")" && pwd)"
+DIR=`cd "$(dirname "${BASH_SOURCE[0]}")" && pwd`
 
 RED='\e[31m'
 NC='\e[0m'
@@ -23,12 +23,13 @@ cp "${PMA_TARGET_DIR}/config.sample.inc.php" "${PMA_TARGET_DIR}/config.inc.php"
 
 # Copy site1 and site2
 mkdir -p "${HTML_DIR}/site1" "${HTML_DIR}/site2"
-cp -r ./source/html/site1 "$(HTML_DIR)/site1" || \ 
+cp -r "$DIR/source/html/site1" "$(HTML_DIR)/site1" || \ 
 	echo -e "${RED}[ERROR]${NC} site1/ not found" 
-cp -r ./source/html/site2 "$(HTML_DIR)/site2" || \
+cp -r "$DIR/source/html/site2" "$(HTML_DIR)/site2" || \
 	echo -e "${RED}[ERROR]${NC} site2/ not found" 
 
-
+# restart apache2
+systemctl restart apache2.service
 
 #mysql_secure_installatio
 
