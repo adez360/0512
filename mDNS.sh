@@ -1,7 +1,6 @@
 #!/bin/bash
 
 ADDRESS=$(hostname -I | awk '{print $1}')
-
 RED='\e[31m'
 NC='\e[0m'
 YELLOW='\e[33m'
@@ -42,13 +41,10 @@ if [[ -z $NAME ]]; then
 	exit 1
 fi
 
-# 如果NAME沒有輸入.local自動補上.local
 if [[ "$NAME" != *.local ]]; then
 	NAME="${NAME}.local"
 fi
 
-# 如果存在子域名 e.g. site1.se218.local 終止
-# 檢查 . 的數量，如果有兩個以上的 . 則視為包含子域名
 DOT_COUNT=$(awk -F"." '{print NF-1}' <<< "$NAME")
 if [[ $DOT_COUNT -gt 1 ]]; then
 	echo -e "[${RED}X${NC}]($NAME}) 只允許輸入根域名(e.g. se218-site1.local)" >&2

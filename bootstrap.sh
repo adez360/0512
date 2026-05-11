@@ -5,10 +5,14 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-echo "[Install] Updating..."
+DIR=`cd "$(dirname "${BASH_SOURCE[0]}")" && pwd`
+RED='\e[31m'
+NC='\e[0m'
+YELLOW='\e[33m'
+GREEN='\e[32m'
 
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
+echo -e "${YELLOW}=====[   初始化系統   ]=====${NC}"
+# Set timezone 
 timedatectl set-timezone 'Asia/Taipei'
 
 # Install package
@@ -18,7 +22,7 @@ if [ ! -f "$PACKAGES_FILE" ];then
 	echo "[Error] packages.list file not found!"
 	exit 1
 fi
-echo "[Install] Installing packages..."
+echo -e "${YELLOW}=====[    安裝套件    ]=====${NC}"
 grep -ve '^#' -e '^$' "$PACKAGES_FILE" | xargs -rt apt install -y
 
 # Fail2ban setup
@@ -41,6 +45,7 @@ else
 fi
 
 # Deploy skel dotfiles from GitHub
+echo -e "${YELLOW}=====[    部屬文件    ]=====${NC}"
 echo "Deploying skel dotfiles from GitHub..."
 if [ ! -d "/root/.skel-dotfiles.git" ]; then
     git clone --bare https://github.com/adez360/skeldotfiles.git /root/.skel-dotfiles.git
@@ -126,6 +131,4 @@ if ! grep -q "alias skelgit=" /root/.zshrc 2>/dev/null; then
     echo "alias skelgit='/usr/bin/git --git-dir=/root/.skel-dotfiles.git --work-tree=/etc/skel'" >> /root/.bashrc
 fi
 
-echo "========================================"
-echo "Installation and configuration complete!"
-echo "========================================"
+echo -e "${YELLOW}=====[   初始化完成   ]=====${NC}"
