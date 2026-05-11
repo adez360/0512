@@ -51,7 +51,7 @@ fi
 # 檢查 . 的數量，如果有兩個以上的 . 則視為包含子域名
 DOT_COUNT=$(awk -F"." '{print NF-1}' <<< "$NAME")
 if [[ $DOT_COUNT -gt 1 ]]; then
-	echo -e "[${RED}X${NC}] 只允許輸入根域名(e.g. se218-site1.local)" >&2
+	echo -e "[${RED}X${NC}]($NAME}) 只允許輸入根域名(e.g. se218-site1.local)" >&2
 	exit 1
 fi
 

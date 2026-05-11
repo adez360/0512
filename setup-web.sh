@@ -48,8 +48,9 @@ if [ -z "$DOMAIN_NAME" ]; then
     exit 1
 fi
 
-if [[ "$DOMAIN_NAME" != *.local ]]; then
-    DOMAIN_NAME="${DOMAIN_NAME}.local"
+# 如果有包含 .local，自動將其移除，交由後續邏輯處理
+if [[ "$DOMAIN_NAME" == *.local ]]; then
+    DOMAIN_NAME="${DOMAIN_NAME%.local}"
 fi
 
 # Register domains via mDNS
