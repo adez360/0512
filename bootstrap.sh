@@ -6,16 +6,18 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 echo "[Install] Updating..."
-apt update
 
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+apt update
 # Install package
-PACKAGES_FILE="./packages.list"
+PACKAGES_FILE="$DIR/packages.list"
 if [ ! -f "$PACKAGES_FILE" ];then
 	echo "[Error] packages.list file not found!"
 	exit 1
 fi
 echo "[Install] Installing packages..."
-grep -v '^ #' "#PACKAGES_FILE" | xargs -r apt install -y
+grep -v '^ #' "$PACKAGES_FILE" | xargs -r apt install -y
 
 # Create symlink
 if command -v fdfind >/dev/null 2>&1 && [ ! -e /usr/local/bin/fd ]; then
