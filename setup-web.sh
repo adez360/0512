@@ -35,6 +35,10 @@ if [ -z "$DOMAIN_NAME" ]; then
     exit 1
 fi
 
+if [[ "$DOMAIN_NAME" != *.local ]]; then
+    DOMAIN_NAME="${DOMAIN_NAME}.local"
+fi
+
 APACHE_CONF_DIR="/etc/apache2/sites-enabled"
 mkdir -p "${APACHE_CONF_DIR}"
 sed -e "s/site1.g3.local/site1.${DOMAIN_NAME}/g" \
