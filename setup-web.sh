@@ -28,7 +28,31 @@ cp -r "$DIR/source/html/site1" "${HTML_DIR}/site1" || \
 cp -r "$DIR/source/html/site2" "${HTML_DIR}/site2" || \
         echo -e "${RED}[ERROR]${NC} site2/ not found" 
 
+# Configure Apache virtual hosts
+read -p "Enter the base domain name (e.g., example.local): " DOMAIN_NAME
+if [ -z "$DOMAIN_NAME" ]; then
+    echo -e "${RED}[ERROR]${NC} Domain name cannot be empty."
+    exit 1
+fi
+
+APACHE_CONF_DIR="/etc/apache2/sites-enabled"
+mkdir -p "${APACHE_CONF_DIR}"
+sed -e "s/site1.g3.local/site1.${DOMAIN_NAME}/g" \
+    -e "s/site2.g3.local/site2.${DOMAIN_NAME}/g" \
+    -e "s|DocumentRoot /var/www/html/site1$|DocumentRoot /var/www/html/site2|2" \
+    "$DIR/source/sites-enabled/001-main.conf" > "${APACHE_CONF_DIR}/001-main.conf"
+
+echo "Configured Apache virtual hosts for site1.${DOMAIN_NAME} and site2.${DOMAIN_NAME}"
+
 # restart apache2
 systemctl restart apache2.service
+
+# Register domains via mDNS
+if [ -f "$DIR/mDNS.sh" ]; then
+    "$DIR/mDNS.sh" -n "site1.${DOMAIN_NAME}"
+    "$DIR/mDNS.sh" -n "site2.${DOMAIN_NAME}"
+else
+    echo -e "${RED}[ERROR]${NC} mDNS.sh not found in $DIR"
+fi
 
 #mysql_secure_installation
