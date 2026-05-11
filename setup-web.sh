@@ -23,9 +23,9 @@ cp "${PMA_TARGET_DIR}/config.sample.inc.php" "${PMA_TARGET_DIR}/config.inc.php"
 
 # Copy site1 and site2
 mkdir -p "${HTML_DIR}/site1" "${HTML_DIR}/site2"
-cp -r "$DIR/source/html/site1" "$(HTML_DIR)/site1" || \ 
+cp -r "$DIR/source/html/site1" "${HTML_DIR}/site1" || \
 	echo -e "${RED}[ERROR]${NC} site1/ not found" 
-cp -r "$DIR/source/html/site2" "$(HTML_DIR)/site2" || \
+cp -r "$DIR/source/html/site2" "${HTML_DIR}/site2" || \
 	echo -e "${RED}[ERROR]${NC} site2/ not found" 
 
 # restart apache2
