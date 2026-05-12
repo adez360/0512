@@ -31,9 +31,9 @@ fi
 
 # Copy site1 and site2
 mkdir -p "${HTML_DIR}/site1" "${HTML_DIR}/site2"
-cp -r "$DIR/source/html/site1" "${HTML_DIR}/site1" || \
+cp -r "$DIR/source/html/site1" "${HTML_DIR}/" || \
         echo -e "${RED}[X]${NC} site1/ not found" 
-cp -r "$DIR/source/html/site2" "${HTML_DIR}/site2" || \
+cp -r "$DIR/source/html/site2" "${HTML_DIR}/" || \
         echo -e "${RED}[X]${NC} site2/ not found" 
 
 # Configure Apache virtual hosts
