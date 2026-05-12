@@ -58,8 +58,8 @@ fi
 # write apache2 config
 APACHE_CONF_DIR="/etc/apache2/sites-enabled"
 mkdir -p "${APACHE_CONF_DIR}"
-sed -e "s/site1.g3.local/${DOMAIN_NAME}-1/g" \
-    -e "s/site2.g3.local/${DOMAIN_NAME}-2/g" \
+sed -e "s/site1.g3.local/${DOMAIN_NAME}-1.local/g" \
+    -e "s/site2.g3.local/${DOMAIN_NAME}-2.local/g" \
     -e "s|DocumentRoot /var/www/html/site1$|DocumentRoot /var/www/html/site2|2" \
     "$DIR/source/sites-enabled/001-main.conf" > "${APACHE_CONF_DIR}/001-main.conf"
 echo -e "[${GREEN}V${NC}] 已設定 apache2 虛擬主機至:\n    ${DOMAIN_NAME}-1.local\n    ${DOMAIN_NAME}-2.local"
