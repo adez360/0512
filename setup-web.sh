@@ -49,6 +49,7 @@ fi
 
 # Register domains via mDNS
 if [ -f "$DIR/mDNS.sh" ]; then
+    "$DIR/mDNS.sh" -n "${DOMAIN_NAME}"
     "$DIR/mDNS.sh" -n "${DOMAIN_NAME}-1"
     "$DIR/mDNS.sh" -n "${DOMAIN_NAME}-2"
 else
